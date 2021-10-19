@@ -10,8 +10,22 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
+import pymysql
+
 from pathlib     import Path
-from my_settings import DATABASES, SECRET_KEY
+
+from my_settings import ( 
+    DATABASES, 
+    SECRET_KEY,
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
+    AWS_STORAGE_BUCKET_NAME,
+    STATICFILES_STORAGE,
+    DEFAULT_FILE_STORAGE
+)
+
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +40,7 @@ SECRET_KEY = SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', '52.79.96.95', '52.79.96.95:8000']
 
 
 # Application definition
@@ -38,7 +52,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders'
+    'corsheaders',
+    'storages',
+    'core',
+    'products',
+    'users',
+    'subscribes'
 ]
 
 MIDDLEWARE = [
@@ -103,13 +122,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -148,5 +167,19 @@ CORS_ALLOW_HEADERS = (
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
-		#만약 허용해야할 추가적인 헤더키가 있다면?(사용자정의 키) 여기에 추가하면 됩니다.
 )
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+MEDIA_URL        = '/media/'
+MEDIA_ROOT       = os.path.join(BASE_DIR, 'media')
+
+AWS_ACCESS_KEY_ID       = AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY   = AWS_SECRET_ACCESS_KEY
+AWS_S3_CUSTOM_DOMAIN    = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME, 'ap-northeast-2')
+
+DEFAULT_FILE_STORAGE = DEFAULT_FILE_STORAGE
+STATICFILES_STORAGE  = STATICFILES_STORAGE
+MEDIAFILES_LOCATION  = 'media'
+STATICFILES_LOCATION = 'static'

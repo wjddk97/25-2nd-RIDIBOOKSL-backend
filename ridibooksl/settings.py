@@ -18,7 +18,6 @@ from pathlib     import Path
 from my_settings import ( 
     DATABASES, 
     SECRET_KEY,
-    ALGORITHMS,
     AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY,
     AWS_STORAGE_BUCKET_NAME,
@@ -37,8 +36,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = SECRET_KEY
-
-ALGORITHMS = ALGORITHMS
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

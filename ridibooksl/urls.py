@@ -17,5 +17,6 @@ from django.urls import path, include
     
 urlpatterns = [
     path('account',   include('users.urls')),
-    path('subscribe', include('subscribes.urls'))
+    path('subscribe', include('subscribes.urls')),
+    path('products',include('products.urls'))
 ]

@@ -16,7 +16,7 @@ class KakaoLoginView(View):
         try :
             access_token = request.headers.get("Authorization", None)
             kakao_user   = KakaoAPI(access_token, "https://kapi.kakao.com/v2/user/me")
-            response     = kakao_user.got_user()
+            response     = kakao_user.get_user()
 
             if not response.status_code == 200 :
                 return JsonResponse({'message' : 'Invalid Token'}, status=401)

@@ -10,7 +10,7 @@ class UserLoignTest(TestCase):
     def tearDown(self) :
         User.objects.all().delete()
 
-    @patch('users.social_users.requests')
+    @patch('users.kakao_users.requests')
     def test_success_kakao_login_create_new_user(self, mocked_requests) :
         client = Client()
         
@@ -39,7 +39,7 @@ class UserLoignTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    @patch('users.social_users.requests')
+    @patch('users.kakao_users.requests')
     def test_success_kakao_login_invalid_token_error(self, mocked_requests) :
         client = Client()
 

@@ -15,7 +15,7 @@
 - 개발 기간 : 2021-10-18 ~ 2021-10-29 (공휴일 포함)
 - 개발 인원 <br/>
  👨‍👧‍👦 **Front-End** 4명 : 김수민, 김용현, 박세연, 이나영 <br/>
- 👨‍👧‍👦 **Back-End** &nbsp; 2명 : [이기용](https://github.com/leeky940926), [이정아](git repository 링크)
+ 👨‍👧‍👦 **Back-End** &nbsp;2명 : [이기용](https://github.com/leeky940926), [이정아](git repository 링크)
 
 ## 🎬 프로젝트 구현 영상
 

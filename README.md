@@ -4,7 +4,7 @@
 
 ## 🎇 팀명 : RIDIBOOKSLBOOKSL - 리디북슬북슬
 
-![Ridibooksl LOGO](<img width="1008" alt="스크린샷 2021-10-31 오후 2 41 44" src="https://user-images.githubusercontent.com/88086271/139569924-7a5e2f69-0190-44e6-b3f8-118a25272992.png">
+![Ridibooksl LOGO](<img width="1008"  src="https://user-images.githubusercontent.com/88086271/139569924-7a5e2f69-0190-44e6-b3f8-118a25272992.png">
 )
 
 - 팀원들 각자의 기술에 익숙해지는 것을 목표로 하여, 페이지 단위로 개발.

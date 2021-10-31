@@ -22,7 +22,7 @@
 - 🔗 [영상 링크](https://youtu.be/AiPwNHyOqH4)
 
 ## ⚙ 적용 기술
-- **Front-End** : HTML5, CSS3, React, SASS, JSX
+- **Front-End** : HTML/CSS, JSX, React(CRA), Styled-components(Library : React-router-DOM, React-pdf, React-slick)
 - **Back-End** : Python, Django, MySQL, jwt, Kakao Login API, AWS RDS, AWS EC2
 - **Common** : Git, Github, Slack, Trello, Postman
 
@@ -30,7 +30,6 @@
 ![SPAO_diagram_final](https://user-images.githubusercontent.com/88086271/139570067-a6dd6aa9-caa7-4691-a13e-cd0b23fd228f.png)
 
 ## 💻 구현 기능
-### BACKEND
 
 #### 이기용
 

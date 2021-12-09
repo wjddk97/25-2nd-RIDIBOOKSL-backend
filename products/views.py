@@ -1,8 +1,7 @@
 import json
-
 from datetime                     import date, timedelta
-from logging import log
-from django.db.models.aggregates  import Count, Max, Sum
+
+from django.db.models.aggregates  import Count
 from django.db.models.query_utils import Q
 from django.views                 import View
 from django.http                  import JsonResponse
@@ -32,7 +31,6 @@ class ProductMainView(View):
             'patch'     : int(Book.objects.get(id=view_count['book_id']).rent_discount)
         } for view_count in view_counts]
 
-
         view_counts = ViewCount.objects.values('book_id').annotate(max_count=Count('book_id')).order_by('-max_count')
         best_seller = [{
             'book_id'   : view_count['book_id'],
@@ -55,11 +53,11 @@ class ProductView(View):
             menu_name  = Menu.objects.get(id=menu).name
 
             order_dic = {
-                0 : '-created_at',
-                1 : 1,
-                2 : 2,
-                3 : 'max_count',
-                4 : 'created_at'
+                1 : 1, # 할인하는 책
+                2 : 2, # 대여하는 책
+                3 : '-created_at',
+                4 : 'created_at',
+                5 : 'max_count'
             }
 
             q = Q()
@@ -74,14 +72,14 @@ class ProductView(View):
                 category_name = Category.objects.get(id=category).name
             else:
                 category_name = []
-
-            if descending == 0 or descending == 4:
-                books = Book.objects.filter(q).order_by(order_dic[descending])[offset:limit+offset]
             
             if descending == 1 or descending == 2:
                 books = Book.objects.filter(q, rent_discount=order_dic[descending])[offset:limit+offset]
 
-            if descending == 3:
+            if descending == 3 or descending == 4:
+                books = Book.objects.filter(q).order_by(order_dic[descending])[offset:limit+offset]
+
+            if descending == 5:
                 books = Book.objects.filter(q).annotate(max_count=Count('viewcount__book_id')).order_by(order_dic[descending])[offset:limit+offset]
 
             products = [{
@@ -106,7 +104,7 @@ class ProductView(View):
         except Category.DoesNotExist:
             return JsonResponse({'message': 'CATEGORY_DOES_NOT_EXIST'}, status=400)
 
-        return JsonResponse({'products': products, 'menu_name' : menu_name, 'category_name' : category_name}, status=200)
+        return JsonResponse({'products': products, 'menu_name': menu_name, 'category_name': category_name}, status=200)
 
 class SearchView(View):
     def get(self, request):
@@ -117,20 +115,20 @@ class SearchView(View):
         authors    = Author.objects.filter(name__icontains=keyword)
         
         order_dic = {
-                0 : '-created_at',
-                1 : 1,
-                2 : 2,
-                3 : 'max_count',
-                4 : 'created_at'
+                1 : 1, # 할인하는 책
+                2 : 2, # 대여하는 책
+                3 : '-created_at',
+                4 : 'created_at',
+                5 : 'max_count'
             }
-        
-        if descending == 0 or descending == 4:
-            books = Book.objects.filter(main_name__icontains=keyword).order_by(order_dic[descending])[offset:limit+offset]
-            
+                 
         if descending == 1 or descending == 2:
             books = Book.objects.filter(main_name__icontains=keyword, rent_discount=order_dic[descending])[offset:limit+offset]
+
+        if descending == 3 or descending == 4:
+            books = Book.objects.filter(main_name__icontains=keyword).order_by(order_dic[descending])[offset:limit+offset]
         
-        if descending == 3:
+        if descending == 5:
             books = Book.objects.filter(main_name__icontains=keyword).annotate(max_count=Count('viewcount__book_id')).order_by(order_dic[descending])[offset:limit+offset]
 
         author_list = [{
@@ -154,7 +152,7 @@ class SearchView(View):
             'patch'          : int(book.rent_discount) 
         } for book in books]
        
-        return JsonResponse({'author_list': author_list, 'book_list' : book_list}, status=200)
+        return JsonResponse({'author_list': author_list, 'book_list': book_list}, status=200)
 
 class DetailProductView(View):
     def get(self, request, book_id):
@@ -196,7 +194,7 @@ class DetailProductView(View):
                 'author_info'      : author_info,
             }]
             
-            return JsonResponse({'product_detail' : product_detail}, status=200) 
+            return JsonResponse({'product_detail': product_detail}, status=200) 
         
         except Book.DoesNotExist:
             return JsonResponse({'message': 'BOOK_DOES_NOT_EXIST'}, status=400)
@@ -219,7 +217,7 @@ class DetailProductView(View):
                     rating  = rating
                 )
 
-            return JsonResponse({'message':'SUCCESS'}, status=201)  
+            return JsonResponse({'message': 'SUCCESS'}, status=201)  
         
         except json.JSONDecodeError:
             return JsonResponse({'message': 'JSON_DECODE_ERROR'}, status=400)
@@ -271,10 +269,14 @@ class AuthorListView(View) :
                     'rating_count'    : rating.filter(book_id=book.book_id).aggregate(Count('book_id'))['book_id__count']
                 }
             for book in books_authors]
-            return JsonResponse({'author_info' : author_info, 'author_books' : author_books},  status=200)
-        except Book.DoesNotExist :
-            return JsonResponse({'message' : 'Book Does Not Exist'}, status=400)
-        except Author.DoesNotExist :
-            return JsonResponse({'message' : 'Author Does Not Exist'}, status=400)
-        except BookAuthor.DoesNotExist :
-            return JsonResponse({'message' : 'BookAuthor Does Not Exist'}, status=400)
+
+            return JsonResponse({'author_info': author_info, 'author_books': author_books},  status=200)
+
+        except Book.DoesNotExist:
+            return JsonResponse({'message': 'Book_Does_Not_Exist'}, status=400)
+
+        except Author.DoesNotExist:
+            return JsonResponse({'message': 'Author_Does_Not_Exist'}, status=400)
+
+        except BookAuthor.DoesNotExist:
+            return JsonResponse({'message': 'BookAuthor_Does_Not_Exist'}, status=400)
